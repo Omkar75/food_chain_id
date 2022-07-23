@@ -21,6 +21,7 @@ export const AuthProvider = ({children}) => {
         window.location.reload(true)
         
     }
+
     useEffect(()=>{
         const data = localStorage.getItem("user")
         if(data){
@@ -35,6 +36,7 @@ export const AuthProvider = ({children}) => {
             navigate('/', {replace:true})
         }
     },[])
+
     
     return (
         <AuthContext.Provider value={{auth, loginUser, logout}}>

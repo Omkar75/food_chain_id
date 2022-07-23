@@ -13,6 +13,7 @@ import Certification_Decision from "./components/ApplicationForms/Certification_
 import ApprovedICS from "./components/ApplicationForms/ApprovedICS";
 import FieldSpecsnYieldEstimate from "./components/ApplicationForms/FieldSpecsnYieldEstimate";
 import Farmer_List_01c from "./components/ApplicationForms/Farmer_List_01c/Farmer_List_01c";
+import Organic_System_Plan_01a from "./components/ApplicationForms/Organic_System_Plan_01a/Organic_System_Plan_01a";
 import ICSDashboard from "./components/Dashboard/ICSDashboard";
 import FieldHistory from "./components/ApplicationForms/Field_History_01d";
 import PendingListICS from "./components/Dashboard/PendingListICS";
@@ -54,6 +55,9 @@ function App() {
       <Route path='FieldSpecsnYieldEstimate'element={<FieldSpecsnYieldEstimate/>} />
       <Route path="farmerlist" element={<Farmer_List_01c/>}/>
       <Route path="fieldhistory" element={<FieldHistory/>}/>
+
+      <Route path="OrganicSystemPlan01a" element={<Organic_System_Plan_01a/>}/>
+
       {/* FoodchainID dashboard */}
       {/* <Route element={<RequiredAuth allowedRoles={["foodchainid"]}/>}>
         <Route path="dashboard" element={<Dashboard />} /> 
@@ -65,10 +69,10 @@ function App() {
       </Route> */}
       // catch all
       <Route path="*" element={<Missing />} />
+
       <Route path="certification01" element={<Certificationmain />} />
       <Route path="Agreement01" element={<CertificationAgreementMain/>}  /> 
       <Route path="AuditChecklist03" element={<AuditMain/>}  /> 
-
     </Route>
   </Routes>
   );
