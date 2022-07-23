@@ -62,25 +62,25 @@ const process = [
 const ICSDashboard = () => {
   const location = useLocation();
   const [userdata, setuserdata] = useState(location.state?.user || JSON.parse(localStorage.getItem("user")));
+  const [Operatordata, setOperatordata] = useState()
   const [formStatus, setformStatus] = useState();
   
-  
-  const url_status = "/foodchainid/getOperatorStatus";
   const callToApi = async () => {
+    const url_status = "/foodchainid/getoperatorprofile";
+    console.log(userdata.conn_id)
     try {
       const response = await axios.post(
         url_status,
         JSON.stringify({
-          form_conn: userdata.conn_id,
-          role:userdata.roles
+          connid: userdata.conn_id,
         }),
         {
           headers: { "Content-Type": "application/json" },
         }
       );
-      console.log("------" + JSON.stringify(response.data));
+      console.log("---data---" + JSON.stringify(response.data));
       if(response.data){
-        setformStatus(response.data);
+        setformStatus(response.data.data);
       }
       
     } catch (err) {
@@ -89,16 +89,27 @@ const ICSDashboard = () => {
   };
 
   useEffect(() => {
-
     callToApi();
   }, []);
 
   return (
     <section className="sm:!max-w-xl md:!max-w-3xl lg:!max-w-5xl !mx-auto">
-      {JSON.stringify(userdata)}
+      {JSON.stringify(formStatus)}
       <div className="space-y-2">
-        <Card>
-          <h5 className="!text-gray-700">{`Name Of ICS`}</h5>
+      <Card>
+          <div className="flex !flex-row !justify-between">
+          <div>
+          <h5 className="!text-gray-700">
+            <span className="text-base font-normal">{`Name Of ICS: `}</span>
+            <span>{formStatus.name}</span>
+          </h5>
+          <p className="!mb-0">Aadhar No: <span>{formStatus.aadharno}</span></p>
+          </div>
+          <p className="!mb-0">
+            Phone No: <span>{formStatus.phone}</span>
+            <br />
+          </p>
+          </div>
         </Card>
         <Card>
           <section className="!space-x-3">
