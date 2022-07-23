@@ -21,21 +21,20 @@ export const AuthProvider = ({children}) => {
         window.location.reload(true)
         
     }
-    // useEffect(()=>{
-    //     const data = localStorage.getItem("user")
-    //     if(data){
-    //         setAuth(JSON.parse(data));
-    //         console.log(location);
-    //         JSON.parse(data).roles === "Operator"? navigate("icsdashboard"):navigate("dashboard")
-    //         if(auth && location.pathname!=="/" && location?.state?.user){
-    //             console.log(location)
-    //             navigate(location?.pathname, {state : {user: location?.state?.user}})
-    //         }
-            
-    //     }else{
-    //         navigate('/', {replace:true})
-    //     }
-    // },[])
+    useEffect(()=>{
+        const data = localStorage.getItem("user")
+        if(data){
+            setAuth(JSON.parse(data));
+            console.log(location);
+            JSON.parse(data).roles === "Operator"? navigate("icsdashboard"):navigate("dashboard")
+            if(auth && location.pathname!=="/" && location?.state?.user){
+                console.log(location)
+                navigate(location?.pathname, {state : {user: location?.state?.user}})
+            }           
+        }else{
+            navigate('/', {replace:true})
+        }
+    },[])
     
     return (
         <AuthContext.Provider value={{auth, loginUser, logout}}>
