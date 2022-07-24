@@ -1,42 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { Form, Table, Row, Col } from "react-bootstrap";
-//import * as firebase from 'firebase/app';
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
-import {v4} from 'uuid';
-
-//import 'firebase/storage'
-import { getStorage, uploadBytes } from "firebase/storage";
-
-
-import { storage } from './firebase';
-
-import {  ref } from "firebase/storage";
-
+import { storage } from "./firebase";
+import { listAll, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { v4 } from "uuid";
 
 export default function General_Information() {
   const [formdata, setformdata] = useState({
-    C_Application:"",
-    Cm_Application :"",
-    E_Application :"",
-    
-    C_Legal_Req:"",
-    Cm_Legal_Req:"",
-    E_Legal_Req:"",
-    
-    C_Information_Provided :"",
-    Cm_Information_Provided :"",
-    E_Information_Provided :"",
-    
-    
-    C_Operator_Standard :"",
-    Cm_Operator_Standard :"",
-    E_Operator_Standard :"",
-    
-    C_Identifiy:"",
-    Cm_Identifiy:"",
-    E_Identifiy:"",
+    C_Application: "",
+    Cm_Application: "",
+    E_Application: "",
+
+    C_Legal_Req: "",
+    Cm_Legal_Req: "",
+    E_Legal_Req: "",
+
+    C_Information_Provided: "",
+    Cm_Information_Provided: "",
+    E_Information_Provided: "",
+
+    C_Operator_Standard: "",
+    Cm_Operator_Standard: "",
+    E_Operator_Standard: "",
+
+    C_Identifiy: "",
+    Cm_Identifiy: "",
+    E_Identifiy: "",
 
     C_Organic_Plan: "",
     Cm_Organic_Plan: "",
@@ -76,7 +64,6 @@ export default function General_Information() {
     C_Organic_Status_Label: "",
     Cm_Organic_Status_Label: "",
     E_Organic_Status_Label: "",
-    
   });
 
   const inputEvent = (event, datasheet) => {
@@ -86,25 +73,38 @@ export default function General_Information() {
       [event.target.name]: event.target.value,
     };
     setformdata(Newformdata);
-
   };
-
 
   const [imageUpload, setImageUpload] = useState(null);
-   
-   const uploadImage = () => {
-    if(imageUpload == null) return;
-     const imageRef = ref(storage,`images/${imageUpload.name +(v4)}`);
-     uploadBytes(imageRef, imageUpload).then( () => {
-       alert("uploaded ");
-   
-   });
+  const [imageList, setImageList] = useState([]);
+  const imageListRef = ref(storage, "AuditChecklist/");
+  const uploadImage = () => {
+    if (imageUpload == null) return;
+    const imageRef = ref(storage, `AuditChecklist/${imageUpload.name + v4()}`);
+    uploadBytes(imageRef, imageUpload).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
+        console.log(url);
+        setImageList((prev) => [...prev, url]);
+      });
+      console.log("uploaded image");
+    });
   };
-  
-   
 
-  
-  
+  function changeButton(){
+    document.getElementById("mybutton").value="New Button Text";   
+}
+
+  useEffect(() => {
+    listAll(imageListRef).then((response) => {
+      response.items.forEach((item) => {
+        getDownloadURL(item).then((url) => {
+          setImageList((prev) => [url]);
+          // setImageList((prev) => [...prev, url]);
+        });
+      });
+    });
+  }, []);
+
   useEffect(() => {}, [formdata]);
   return (
     <div className="container card card-body ">
@@ -165,18 +165,23 @@ export default function General_Information() {
                 onChange={inputEvent}
                 value={formdata.Cm_Application}
                 type="text"
-              
               />
             </td>
             <td>
-            <input type="file" onChange={(event)=>{setImageUpload(event.target.files[0]); }}  ></input>
-            <td><button onClick={uploadImage}>Upload</button></td>
-            
-            {/* <input type="button" onClick={uploadImage} ></input> */}
-           
-            </td> 
+              <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
+            </td>
           </tr>
-          
         </tbody>
 
         <tbody>
@@ -214,13 +219,18 @@ export default function General_Information() {
               />
             </td>
             <td>
-              <input
-                name="E_Legal_Req"
-                onChange={inputEvent}
-                value={formdata.E_Legal_Req}
-                type="file"
-                placeholder=""
-              />
+              <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -259,15 +269,32 @@ export default function General_Information() {
                 placeholder=""
               />
             </td>
-            <td>
-              <input
-                name="E_Information_Provided"
-                onChange={inputEvent}
-                value={formdata.E_Information_Provided}
-                type="file"
-                placeholder=""
-              />
-            </td>
+
+            <tr>
+            
+                <div>
+                <Form onsubmit="changeButton()">
+                  <input
+                    type="file"
+                    onChange={(event) => {
+                      setImageUpload(event.target.files[0]);
+                    }}
+                  />
+                  <button
+                    id="mybutton"
+                    class="btn btn-secondary btn-sm"
+                    type="submit"
+                    onClick={uploadImage}
+                  >
+                    Upload file
+                  </button>
+                  {imageList.map((url) => {
+                    return <img src={url} width="100" height="40" />;
+                  })}
+                   </Form>
+                </div>
+             
+            </tr>
           </tr>
         </tbody>
 
@@ -302,17 +329,21 @@ export default function General_Information() {
                 onChange={inputEvent}
                 value={formdata.Cm_Operator_Standard}
                 type="text"
-              
               />
             </td>
             <td>
-              <input
-                name="E_Operator_Standard"
-                onChange={inputEvent}
-                value={formdata.E_Operator_Standard}
-                type="file"
-              
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -321,8 +352,11 @@ export default function General_Information() {
           <tr ng-repeat="name in getdrugnameNewArray">
             <td>5</td>
             <td>
-              <tr> Has operator identified authorized knowledgebale representative to remain present during inspection?
-</tr>
+              <tr>
+                {" "}
+                Has operator identified authorized knowledgebale representative
+                to remain present during inspection?
+              </tr>
             </td>
             <td>
               <Form.Group as={Row} className="mb-3">
@@ -350,12 +384,18 @@ export default function General_Information() {
               />
             </td>
             <td>
-              <input
-                name="E_Identifiy"
-                onChange={inputEvent}
-                value={formdata.E_Identifiy}
-                type="file"
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -372,10 +412,7 @@ export default function General_Information() {
           <tr ng-repeat="name in getdrugnameNewArray">
             <td>6</td>
             <td>
-              <tr>
-              Is Organic system plan available & updated? 
-
-              </tr>
+              <tr>Is Organic system plan available & updated?</tr>
             </td>
             <td>
               <Form.Group as={Row} className="mb-3">
@@ -402,12 +439,18 @@ export default function General_Information() {
               />
             </td>
             <td>
-              <input
-                name="E_Organic_Plan"
-                onChange={inputEvent}
-                value={formdata.E_Organic_Plan}
-                type="text"
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -446,12 +489,18 @@ export default function General_Information() {
               />
             </td>
             <td>
-              <input
-                name="E_Operator_Standard"
-                onChange={inputEvent}
-                value={formdata.E_Operator_Standard}
-                type="text"
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -491,13 +540,18 @@ export default function General_Information() {
               />
             </td>
             <td>
-              <input
-                name="E_Feild_History"
-                onChange={inputEvent}
-                value={formdata.E_Feild_History}
-                type="text"
-                placeholder=""
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -537,17 +591,21 @@ export default function General_Information() {
               />
             </td>
             <td>
-              <input
-                name="E_Farm_Maps"
-                onChange={inputEvent}
-                value={formdata.E_Farm_Maps}
-                type="text"
-                placeholder=""
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
-
 
         <tbody>
           <tr ng-repeat="name in getdrugnameNewArray">
@@ -583,12 +641,18 @@ export default function General_Information() {
               />
             </td>
             <td>
-              <input
-                name="E_Conversion_Plan"
-                onChange={inputEvent}
-                value={formdata.E_Conversion_Plan}
-                type="text"
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -628,13 +692,18 @@ export default function General_Information() {
               />
             </td>
             <td>
-              <input
-                name="E_Implementation "
-                onChange={inputEvent}
-                value={formdata.E_Implementation}
-                type="text"
-                placeholder=""
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -674,13 +743,18 @@ export default function General_Information() {
               />
             </td>
             <td>
-              <input
-                name="E_Conversion_Period"
-                onChange={inputEvent}
-                value={formdata.E_Conversion_Period}
-                type="text"
-                placeholder=""
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -727,13 +801,18 @@ export default function General_Information() {
               />
             </td>
             <td>
-              <input
-                name="E_Production_Unit"
-                onChange={inputEvent}
-                value={formdata.E_Production_Unit}
-                type="text"
-                placeholder=""
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -773,13 +852,18 @@ export default function General_Information() {
               />
             </td>
             <td>
-              <input
-                name="E_Reduction"
-                onChange={inputEvent}
-                value={formdata.E_Reduction}
-                type="text"
-                placeholder=""
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -819,18 +903,21 @@ export default function General_Information() {
               />
             </td>
             <td>
-              <input
-                name="E_Organic_Status_Label"
-                onChange={inputEvent}
-                value={formdata.E_Organic_Status_Label}
-                type="text"
-                placeholder=""
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
-       
-        
       </Table>
     </div>
   );
