@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Col, Card, Form, Table, Row, Button } from "react-bootstrap";
 import * as XLSX from "xlsx/xlsx.mjs";
-import ModalComp from "../../Modal";
-import ModalForInspection from "../../ModalForInspection";
+import ModalAddRows from "../../AllModalComponents/ModalAddRows";
+import ModalCropDetails from "../../AllModalComponents/ModalCropDetails";
+import ModalForInspection from "../../AllModalComponents/ModalForInspection";
 const StatestheCmp = {
   Sr_no: "",
   Farmer_Name: "",
@@ -178,7 +179,8 @@ const CROP_DETAILS = () => {
         <label className="font-medium ">ICS Name</label>
         <input type="text" />
       </div>
-      <div className="space-x-4 flex">
+      <div className="space-y-4">
+      <div className="space-x-4 flex justify-end">
         <Button
           onClick={() => {
             sethideRowButton(false);
@@ -336,8 +338,10 @@ const CROP_DETAILS = () => {
           })}
         </tbody>
       </Table>
+      </div>
       <>
-      <ModalComp
+      <ModalAddRows/>
+      <ModalCropDetails
         show={modalShow}
         setFarmerListArray={setFarmerListArray}
         FarmerListArray={FarmerListArray}

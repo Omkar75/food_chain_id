@@ -8,7 +8,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import { Table } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 
-const ModalComp = (props) => {
+const ModalCropDetails = (props) => {
     const [Crop, setCrop] = useState({
         season: "",
         type: "",
@@ -137,4 +137,4 @@ const ModalComp = (props) => {
   );
 }
 
-export default ModalComp
+export default ModalCropDetails

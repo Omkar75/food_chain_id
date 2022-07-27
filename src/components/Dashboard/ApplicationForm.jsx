@@ -3,66 +3,65 @@ import { Link } from "react-router-dom";
 import { Card, Badge } from "flowbite-react";
 import { useLocation } from "react-router-dom";
 import axios from "../../api/axios";
-const process = [
-  {
-    no:"01",
-    name: "Certification Application Crop-Individual",
-    link: "certification01",
-    statustext: "form1",
-  },
-  {
-    no:"01a",
-    name: "Organis System Plan-Crop Production",
-    link: "OrganicSystemPlan01a",
-    statustext: "form1a",
-  },
-  {
-    no: "01b",
-    name: "Field Specification and Yield Estimate",
-    link: "FieldSpecsnYieldEstimate",
-    statustext: "form1b",
-  },
-  { no: "01c", name: "Farmer List", link: "farmerlist", statustext: "form1c" },
-  {
-    no: "01d",
-    name: "Field History",
-    link: "fieldhistory",
-    statustext: "form1d",
-  },
-  {
-    no:"02",
-    name: "Certification Agreement",
-    link: "Agreement01",
-    statustext: "form2",
-  },
-  {
-    no:"03",
-    name: "Audit Checklist - Crop Production",
-    link: "AuditChecklist03",
-    statustext: "form3",
-  },
-  {
-    name: "Individual Assessment",
-    link: "certificationdecision",
-    statustext: "form3a",
-  },
-  {
-    name: "Certification Audit Report",
-    link: "certificationdecision",
-    statustext: "form4",
-  },
-  {
-    name: "Technical Review - Crop Production",
-    link: "certificationdecision",
-    statustext: "form5",
-  },
-  {
-    no: "06",
-    name: "Certification Decision",
-    link: "certificationdecision",
-    statustext: "form6",
-  },
-];
+const process = [{
+  no:"01",
+  name: "Certification Application Crop-Individual",
+  link: "certification01",
+  statustext: "form1",
+},
+{
+  no:"01a",
+  name: "Organis System Plan-Crop Production",
+  link: "OrganicSystemPlan01a",
+  statustext: "form1a",
+},
+{
+  no: "01b",
+  name: "Field Specification and Yield Estimate",
+  link: "FieldSpecsnYieldEstimate",
+  statustext: "form1b",
+},
+{ no: "01c", name: "Farmer List", link: "farmerlist", statustext: "form1c" },
+{
+  no: "01d",
+  name: "Field History",
+  link: "fieldhistory",
+  statustext: "form1d",
+},
+{
+  no:"02",
+  name: "Certification Agreement",
+  link: "Agreement01",
+  statustext: "form2",
+},
+{
+  no:"03",
+  name: "Audit Checklist - Crop Production",
+  link: "AuditChecklist03",
+  statustext: "form3",
+},
+{
+  name: "Individual Assessment",
+  link: "certificationdecision",
+  statustext: "form3a",
+},
+{
+  name: "Certification Audit Report",
+  link: "certificationdecision",
+  statustext: "form4",
+},
+{
+  no:"05",
+  name: "Technical Review - Crop Production",
+  link: "TechnicalReview5",
+  statustext: "form5",
+},
+{
+  no: "06",
+  name: "Certification Decision",
+  link: "certificationdecision",
+  statustext: "form6",
+}];
 const ApplicationForm = () => {
   const location = useLocation();
   const [userdata, setuserdata] = useState(location?.state?.user);
