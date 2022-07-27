@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Form, Table, Row, Col } from "react-bootstrap";
+import { storage } from "./firebase";
+import { listAll, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { v4 } from "uuid";
 
 export default function Disease_Weed_management() {
   const [formdata, setformdata] = useState({
@@ -73,6 +76,38 @@ export default function Disease_Weed_management() {
     };
     setformdata(Newformdata);
   };
+
+  const [imageUpload, setImageUpload] = useState(null);
+  const [imageList, setImageList] = useState([]);
+  const imageListRef = ref(storage, "AuditChecklist/");
+  const uploadImage = () => {
+    if (imageUpload == null) return;
+    const imageRef = ref(storage, `AuditChecklist/${imageUpload.name + v4()}`);
+    uploadBytes(imageRef, imageUpload).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
+        console.log(url);
+        setImageList((prev) => [...prev, url]);
+      });
+      console.log("uploaded image");
+    });
+  };
+
+  function changeButton(){
+    document.getElementById("mybutton").value="New Button Text";   
+}
+
+  useEffect(() => {
+    listAll(imageListRef).then((response) => {
+      response.items.forEach((item) => {
+        getDownloadURL(item).then((url) => {
+          setImageList((prev) => [url]);
+          // setImageList((prev) => [...prev, url]);
+        });
+      });
+    });
+  }, []);
+
+
 
   // useEffect(() => {}, [formdata]);
   return (
