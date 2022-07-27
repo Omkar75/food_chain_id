@@ -31,6 +31,7 @@ import CertificationAgreementMain from "./components/Certification_Agreement/Cer
 //importing audit form 
 
 import AuditMain from "./components/Audit_Form/AuditMain";
+import Technical_Review_5 from "./components/ApplicationForms/Technical_Review_5/Technical_Review_5";
 
 
 function App() {
@@ -57,6 +58,7 @@ function App() {
       <Route path="fieldhistory" element={<FieldHistory/>}/>
 
       <Route path="OrganicSystemPlan01a" element={<Organic_System_Plan_01a/>}/>
+      <Route path="TechnicalReview5" element={<Technical_Review_5/>}/>
 
       {/* FoodchainID dashboard */}
       {/* <Route element={<RequiredAuth allowedRoles={["foodchainid"]}/>}>
