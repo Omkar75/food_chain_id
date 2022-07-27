@@ -4,6 +4,8 @@ import * as XLSX from "xlsx/xlsx.mjs";
 import ModalAddRows from "../../AllModalComponents/ModalAddRows";
 import ModalCropDetails from "../../AllModalComponents/ModalCropDetails";
 import ModalForInspection from "../../AllModalComponents/ModalForInspection";
+const headerlist = [
+  "Sr. No.","Farmer Name","Farmer TraceNet Reg. No.","Total Area (Ha)","Date of last use of forbidden products","Date of Registration","Latitude","Longitude","Aadhar No.","Contact", "State", "District","Taluka", "Village","Farmer","Field Status"]
 const StatestheCmp = {
   Sr_no: "",
   Farmer_Name: "",
@@ -27,18 +29,18 @@ const StatestheCmp = {
 const CROP_DETAILS = () => {
   const [file, setFile] = useState();
   const [edituserID, setedituserID] = useState(null);
-  const [hideRowButton, sethideRowButton] = useState(true);
   const [FarmerListArray, setFarmerListArray] = useState([]);
   const [ModalCropData, setModalCropData] = useState();
   const [ModalInspectionData, setModalInspectionData] = useState();
   const [tableDetails, settableDetails] = useState(StatestheCmp);
-  const [cropArray, setcropArray] = useState([]);
-  const [InspectionArray, setInspectionArray] = useState([]);
-  
+
   
   const [EditDetails, setEditDetails] = useState(StatestheCmp);
   const [modalShow, setModalShow] = useState(false);
   const [modalInspectionShow, setModalInspectionShow] = useState(false);
+
+  const [ModalAddRowShow, setModalAddRowShow] = useState(false)
+
   const handleEditClick = (event, user) => {
     event.preventDefault();
     console.log(user);
@@ -164,6 +166,7 @@ const CROP_DETAILS = () => {
     };
     reader.readAsBinaryString(f);
   };
+
   const showModalCropData = (val) => {
     setModalCropData(val);
     setModalShow(true);
@@ -183,7 +186,7 @@ const CROP_DETAILS = () => {
       <div className="space-x-4 flex justify-end">
         <Button
           onClick={() => {
-            sethideRowButton(false);
+            setModalAddRowShow(true);;
           }}
         >
           Add Row
@@ -225,39 +228,6 @@ const CROP_DETAILS = () => {
           </tr>
         </thead>
         <tbody>
-          <tr className={hideRowButton === true ? "hidden" : ""}>
-            {Object.entries(tableDetails).map((ass, index) => {
-              return Array.isArray(ass[1]) ? (
-                ""
-              ) : (
-                <td className="" key={index}>
-                  <input
-                    className="!text-sm !font-light p-1"
-                    type="text"
-                    name={ass[0]}
-                    value={tableDetails[ass[0]]}
-                    placeholder={tableDetails[ass[0]]}
-                    onChange={handleChangeNewUser}
-                  />
-                </td>
-              );
-            })}
-            <td>
-              <Button className="!text-sm" onClick={handleAddNewUser}>
-                Add
-              </Button>
-            </td>
-            <td>
-              <Button
-                className="!text-sm"
-                onClick={() => {
-                  sethideRowButton(true);
-                }}
-              >
-                Cancel
-              </Button>
-            </td>
-          </tr>
           {FarmerListArray.map((v, index) => {
             return edituserID === v.Farmer_Reg_No_as_on_Tracent ? (
               <tr>
@@ -277,6 +247,16 @@ const CROP_DETAILS = () => {
                     </td>
                   );
                 })}
+                <td>
+                  <Button variant="primary" onClick={() => showModalCropData(v)}>
+                    Crops
+                  </Button>
+                </td>
+                <td>
+                  <Button variant="primary" onClick={() => showModalInspectionData(v)}>
+                    Inspection
+                  </Button>
+                </td>
                 <td>
                   <Button
                     onClick={(event) => {
@@ -340,7 +320,14 @@ const CROP_DETAILS = () => {
       </Table>
       </div>
       <>
-      <ModalAddRows/>
+      <ModalAddRows
+      show={ModalAddRowShow}
+      tableDetails={tableDetails}
+      handleChangeNewUser={handleChangeNewUser}
+      handleAddNewUser={handleAddNewUser}
+      headerlist={headerlist}
+      onHide={() => setModalAddRowShow(false)}
+      />
       <ModalCropDetails
         show={modalShow}
         setFarmerListArray={setFarmerListArray}

@@ -16,7 +16,7 @@ const ModalAddRows = (props) => {
         organic_status: "",
         estqty: "",
       });
-  const { onHide, modaldata, FarmerListArray, setFarmerListArray } = props;
+  const { onHide, headerlist, modaldata, tableDetails, handleChangeNewUser, handleAddNewUser } = props;
   const [Indidata, setIndidata] = useState(modaldata?.crop);
   useEffect(() => {
     if (modaldata?.crop) {
@@ -24,40 +24,6 @@ const ModalAddRows = (props) => {
     }
   }, [modaldata]);
 
-  const handleChangeNewUser = (event, datasheet) => {
-    let newcropdata = {
-      ...Crop,
-      [event.target.name]: event.target.value,
-    };
-    setCrop(newcropdata);
-  };
-  const handleAddNewUser = (event) => {
-    debugger;
-    event.preventDefault();
-    let temparr = Indidata;
-    temparr = [...Indidata, Crop];
-    setIndidata(temparr);
-    let DeletedUser = FarmerListArray?.filter(
-      (u) =>
-        u.Farmer_Reg_No_as_on_Tracent === modaldata.Farmer_Reg_No_as_on_Tracent
-    );
-    let ob = DeletedUser[0];
-    ob.crop = temparr;
-    let foundindex = FarmerListArray?.findIndex(
-      (x) => x.Farmer_Reg_No_as_on_Tracent === ob.Farmer_Reg_No_as_on_Tracent
-    );
-    let temp = FarmerListArray;
-    temp[foundindex] = ob;
-    setFarmerListArray(temp);
-  };
-  const handleDeleteClick = (event, user) => {
-    event.preventDefault();
-    let arrToDeleteUser = [...FarmerListArray];
-    let DeletedUser = arrToDeleteUser.filter(
-      (u) => u.Farmer_Reg_No_as_on_Tracent != user.Farmer_Reg_No_as_on_Tracent
-    );
-    setFarmerListArray([...DeletedUser]);
-  };
   return (
     <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter">
       <Modal.Header closeButton>
@@ -69,65 +35,43 @@ const ModalAddRows = (props) => {
         <Container>
           <Row>
             {JSON.stringify(Indidata)}
-          <tr>
-              {Object.entries(Crop).map((ass, index) => {
+            <Col>
+            <div className="space-y-2">
+            {headerlist.map((h,i)=>{
                 return (
-                  <td className="" key={index}>
-                    <input
-                      className="!text-sm !font-light p-1"
-                      type="text"
-                      name={ass[0]}
-                      value={Crop[ass[0]]}
-                      placeholder={ass[0]}
-                      onChange={handleChangeNewUser}
-                    />
-                  </td>
-                );
-              })}
-              </tr>
-              <Button onClick={handleAddNewUser}>Add Crop</Button>
+                    <div className="!text-sm p-1 border-[1px]">{h} :-</div>
+                )
+            })}
+            </div>
+            </Col>
+            <Col>
+            <div className="space-y-2">
+            {Object.entries(tableDetails).map((ass, index) => {
+              return Array.isArray(ass[1]) ? (
+                ""
+              ) : (
+                <div className="" key={index}>
+                  <input
+                    className="!text-sm !font-light p-1"
+                    type="text"
+                    name={ass[0]}
+                    value={tableDetails[ass[0]]}
+                    placeholder={ass[0]}
+                    onChange={handleChangeNewUser}
+                  />
+                </div>
+              );
+            })}
+            <div className="flex justify-end">
+              <Button className="" onClick={handleAddNewUser}>
+                Add Data
+              </Button>
+            </div>
+            </div>
+            
+            </Col>
+
           </Row>
-          <Table
-          responsive
-          bordered
-          hover
-          className=" !border-2 !border-teal-700 !rounded-lg"
-          >
-            <thead>
-              <tr>
-                <th>Trancent No.</th>
-                <th>Season</th>
-                <th>Type</th>
-                <th>Product Status</th>
-                <th>Organic Status</th>
-                <th>Est. Qty</th>
-                <th>Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Indidata?.map((d, i) => {
-                return (
-                  <tr key={i}>
-                    <td>{modaldata?.Farmer_Reg_No_as_on_Tracent}</td>
-                    <td>{d.season}</td>
-                    <td>{d.type}</td>
-                    <td>{d.product_status}</td>
-                    <td>{d.organic_status}</td>
-                    <td>{d.estqty}</td>
-                <td>
-                <Button className="!text-sm"
-                      onClick={(event) => {
-                        handleDeleteClick(event, d);
-                      }}
-                    >
-                      Delete
-                    </Button>
-                </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </Table>
         </Container>
       </Modal.Body>
       <Modal.Footer>

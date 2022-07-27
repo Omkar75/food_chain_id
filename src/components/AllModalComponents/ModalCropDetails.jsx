@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react';
 
 const ModalCropDetails = (props) => {
     const [Crop, setCrop] = useState({
+        crop_name:"",
         season: "",
         type: "",
         product_status: "",
@@ -91,11 +92,12 @@ const ModalCropDetails = (props) => {
           responsive
           bordered
           hover
-          className=" !border-2 !border-teal-700 !rounded-lg"
+          className=" !border-2 !border-teal-700 !rounded-3xl"
           >
             <thead>
               <tr>
                 <th>Trancent No.</th>
+                <th>Crop Name</th>
                 <th>Season</th>
                 <th>Type</th>
                 <th>Product Status</th>
@@ -109,6 +111,7 @@ const ModalCropDetails = (props) => {
                 return (
                   <tr key={i}>
                     <td>{modaldata?.Farmer_Reg_No_as_on_Tracent}</td>
+                    <td>{d.crop_name}</td>
                     <td>{d.season}</td>
                     <td>{d.type}</td>
                     <td>{d.product_status}</td>
