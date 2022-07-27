@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Form, Table, Row, Col } from "react-bootstrap";
+import { storage } from "./firebase";
+import { listAll, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { v4 } from "uuid";
 
 export default function Landscape_Diversity() {
   const [formdata, setformdata] = useState({
@@ -68,6 +71,39 @@ export default function Landscape_Diversity() {
     setformdata(Newformdata);
   };
 
+
+
+  const [imageUpload, setImageUpload] = useState(null);
+  const [imageList, setImageList] = useState([]);
+  const imageListRef = ref(storage, "AuditChecklist/");
+  const uploadImage = () => {
+    if (imageUpload == null) return;
+    const imageRef = ref(storage, `AuditChecklist/${imageUpload.name + v4()}`);
+    uploadBytes(imageRef, imageUpload).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
+        console.log(url);
+        setImageList((prev) => [...prev, url]);
+      });
+      console.log("uploaded image");
+    });
+  };
+
+  function changeButton(){
+    document.getElementById("mybutton").value="New Button Text";   
+}
+
+  useEffect(() => {
+    listAll(imageListRef).then((response) => {
+      response.items.forEach((item) => {
+        getDownloadURL(item).then((url) => {
+          setImageList((prev) => [url]);
+          // setImageList((prev) => [...prev, url]);
+        });
+      });
+    });
+  }, []);
+
+
    useEffect(() => {}, [formdata]);
   return (
     <div className="container card card-body ">
@@ -131,12 +167,18 @@ export default function Landscape_Diversity() {
               />
             </td>
             <td>
-              <input
-                name="E_Biodiversity"
-                onChange={inputEvent}
-                value={formdata.E_Biodiversity}
-                type="text"
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -177,13 +219,18 @@ export default function Landscape_Diversity() {
               />
             </td>
             <td>
-              <input
-                name="E_Soil_Condition"
-                onChange={inputEvent}
-                value={formdata.E_Soil_Condition}
-                type="text"
-                placeholder=""
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -230,13 +277,18 @@ export default function Landscape_Diversity() {
               />
             </td>
             <td>
-              <input
-                name="E_Source"
-                onChange={inputEvent}
-                value={formdata.E_Source}
-                type="text"
-                placeholder=""
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -275,13 +327,18 @@ export default function Landscape_Diversity() {
               />
             </td>
             <td>
-              <input
-                name="E_Source_Seed"
-                onChange={inputEvent}
-                value={formdata.E_Source_Seed}
-                type="text"
-                placeholder=""
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -320,13 +377,18 @@ export default function Landscape_Diversity() {
               />
             </td>
             <td>
-              <input
-                name="E_GMO_Freel"
-                onChange={inputEvent}
-                value={formdata.E_GMO_Free}
-                type="text"
-                placeholder=""
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -367,12 +429,18 @@ export default function Landscape_Diversity() {
               />
             </td>
             <td>
-              <input
-                name="E_Soil_Fertility"
-                onChange={inputEvent}
-                value={formdata.E_Soil_Fertility}
-                type="text"
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -410,12 +478,18 @@ export default function Landscape_Diversity() {
               />
             </td>
             <td>
-              <input
-                name="E_Heavy_Metals"
-                onChange={inputEvent}
-                value={formdata.E_Heavy_Metals}
-                type="text"
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -456,13 +530,18 @@ export default function Landscape_Diversity() {
               />
             </td>
             <td>
-              <input
-                name="E_Fertilizer"
-                onChange={inputEvent}
-                value={formdata.E_Fertilizer}
-                type="text"
-                placeholder=""
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -499,13 +578,18 @@ export default function Landscape_Diversity() {
               />
             </td>
             <td>
-              <input
-                name="E_PH"
-                onChange={inputEvent}
-                value={formdata.E_PH}
-                type="text"
-                placeholder=""
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -545,13 +629,18 @@ export default function Landscape_Diversity() {
               />
             </td>
             <td>
-              <input
-                name="E_Manuring"
-                onChange={inputEvent}
-                value={formdata.E_Manuring}
-                type="text"
-                placeholder=""
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -592,13 +681,18 @@ export default function Landscape_Diversity() {
               />
             </td>
             <td>
-              <input
-                name="E_Mineral"
-                onChange={inputEvent}
-                value={formdata.E_Mineral}
-                type="text"
-                placeholder=""
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -638,13 +732,18 @@ export default function Landscape_Diversity() {
               />
             </td>
             <td>
-              <input
-                name="E_Human_Excreta"
-                onChange={inputEvent}
-                value={formdata.E_Human_Excreta}
-                type="text"
-                placeholder=""
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -683,13 +782,18 @@ export default function Landscape_Diversity() {
               />
             </td>
             <td>
-              <input
-                name="E_Nitogen_Fertilizer"
-                onChange={inputEvent}
-                value={formdata.E_Nitogen_Fertilizer}
-                type="text"
-                placeholder=""
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -725,13 +829,18 @@ export default function Landscape_Diversity() {
               />
             </td>
             <td>
-              <input
-                name="E_Restricted_Input"
-                onChange={inputEvent}
-                value={formdata.E_Restricted_Input}
-                type="text"
-                placeholder=""
-              />
+            <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <button onClick={uploadImage}>Upload file</button>
+                {imageList.map((url) => {
+                  return <img src={url} width="100" height="40" />;
+                })}
+              </div>
             </td>
           </tr>
         </tbody>
