@@ -1,104 +1,47 @@
 import React, { useState } from "react";
 import { Col, Card, Form, Table, Row, Button } from "react-bootstrap";
 import * as XLSX from "xlsx/xlsx.mjs";
-const Tableheaders = [
-  { name: "Sr. No." },
-  { name: "State" },
-  { name: "District" },
-  { name: "Taluk" },
-  { name: "Village" },
-  { name: "Farmer" },
-  { name: "Farmer TraceNet Reg. No." },
-  { name: "Total Area (Ha)" },
-  { name: "Field Status" },
-  { name: "Crop" },
-];
-const famer = [
-  {
-    Sr_no: "1",
-    state: "helo",
-    district: "12",
-    taluka: "kslf",
-    village: "sfs",
-    farmer: "adsg",
-    farmer_tracenet_reg_no: "sf",
-    total_area_ha: "bxm",
-    field_status: "ipor",
-    crop: [
-      {
-        season: "summer",
-        type: "dontknow",
-        product_status: "done",
-        estqty: "500",
-      },
-    ],
-  },
-  {
-    Sr_no: "2",
-    state: "helo",
-    district: "12",
-    taluka: "kslf",
-    village: "sfs",
-    farmer: "adsg",
-    farmer_tracenet_reg_no: "sf",
-    total_area_ha: "bxm",
-    field_status: "ipor",
-    crop: [
-      {
-        season: "summer",
-        type: "dontknow",
-        product_status: "done",
-        estqty: "500",
-      },
-      {
-        season: "summer",
-        type: "dontknow",
-        product_status: "done",
-        estqty: "500",
-      },
-    ],
-  },
-];
-const cropheader = ["Season", "Crop Type", "Product Status", "Est. Qty (Kg)"];
+import ModalComp from "../../Modal";
+import ModalForInspection from "../../ModalForInspection";
+const StatestheCmp = {
+  Sr_no: "",
+  Farmer_Name: "",
+  Farmer_Reg_No_as_on_Tracent: "",
+  Total_area_Ha: "",
+  Date_of_last_use_of_forbidden_products: "",
+  Date_of_Registration: "",
+  Latitude: "",
+  Longitude: "",
+  Aadhar_No: "",
+  Contact: "",
+  state: "",
+  district: "",
+  taluka: "",
+  village: "",
+  farmer: "",
+  field_status: "",
+  crop: [],
+  Inspection: [],
+};
 const CROP_DETAILS = () => {
-  const [Data, setData] = useState(famer);
   const [file, setFile] = useState();
   const [edituserID, setedituserID] = useState(null);
   const [hideRowButton, sethideRowButton] = useState(true);
-  const [tableDetails, settableDetails] = useState({
-    Sr_no: "",
-    state: "",
-    district: "",
-    taluka: "",
-    village: "",
-    farmer: "",
-    farmer_tracenet_reg_no: "",
-    total_area_ha: "",
-    field_status: "",
-    crop: [
-      { season: "", type: "", product_status: "", estqty: "" },
-      { season: "", type: "", product_status: "", estqty: "" },
-    ],
-  });
-  const [EditDetails, setEditDetails] = useState({
-    Sr_no: "",
-    state: "",
-    district: "",
-    taluka: "",
-    village: "",
-    farmer: "",
-    farmer_tracenet_reg_no: "",
-    total_area_ha: "",
-    field_status: "",
-    crop: [
-      { season: "", type: "", product_status: "", estqty: "" },
-      { season: "", type: "", product_status: "", estqty: "" },
-    ],
-  });
+  const [FarmerListArray, setFarmerListArray] = useState([]);
+  const [ModalCropData, setModalCropData] = useState();
+  const [ModalInspectionData, setModalInspectionData] = useState();
+  const [tableDetails, settableDetails] = useState(StatestheCmp);
+  const [cropArray, setcropArray] = useState([]);
+  const [InspectionArray, setInspectionArray] = useState([]);
+  
+  
+  const [EditDetails, setEditDetails] = useState(StatestheCmp);
+  const [modalShow, setModalShow] = useState(false);
+  const [modalInspectionShow, setModalInspectionShow] = useState(false);
   const handleEditClick = (event, user) => {
     event.preventDefault();
     console.log(user);
-    setedituserID(user.No_of_farmers);
+    setedituserID(user.Farmer_Reg_No_as_on_Tracent);
     const fromValues = { ...user };
     setEditDetails({ ...fromValues });
   };
@@ -112,12 +55,28 @@ const CROP_DETAILS = () => {
   };
   const handleAddNewUser = (event) => {
     event.preventDefault();
-    setData((oldform) => [...oldform, tableDetails]);
-    let Newform = { ...tableDetails };
-    Object.keys(Newform).forEach((key) => {
-      Newform[key] = "";
-    });
-    settableDetails({ ...Newform });
+    let emptystate = {
+      Sr_no: "",
+      Farmer_Name: "",
+      Farmer_Reg_No_as_on_Tracent: "",
+      Total_area_Ha: "",
+      Date_of_last_use_of_forbidden_products: "",
+      Date_of_Registration: "",
+      Latitude: "",
+      Longitude: "",
+      Aadhar_No: "",
+      Contact: "",
+      state: "",
+      district: "",
+      taluka: "",
+      village: "",
+      farmer: "",
+      field_status: "",
+      crop: [],
+      Inspection: [],
+    };
+    setFarmerListArray((oldform) => [...oldform, tableDetails]);
+    settableDetails({ ...emptystate });
   };
   const handleEditFormChange = (event) => {
     event.preventDefault();
@@ -129,10 +88,12 @@ const CROP_DETAILS = () => {
   };
   const handleEditFormSubmit = (event, user) => {
     event.preventDefault();
-    const index = Data.findIndex((user) => user.No_of_farmers === edituserID);
-    const newStatevalue = [...Data];
+    const index = FarmerListArray.findIndex(
+      (user) => user.Farmer_Reg_No_as_on_Tracent === edituserID
+    );
+    const newStatevalue = [...FarmerListArray];
     newStatevalue[index] = { ...EditDetails };
-    setData([...newStatevalue]);
+    setFarmerListArray([...newStatevalue]);
     setedituserID(null);
   };
   const handleCancelClick = () => {
@@ -140,11 +101,11 @@ const CROP_DETAILS = () => {
   };
   const handleDeleteClick = (event, user) => {
     event.preventDefault();
-    let arrToDeleteUser = [...Data];
+    let arrToDeleteUser = [...FarmerListArray];
     let DeletedUser = arrToDeleteUser.filter(
-      (u) => u.No_of_farmers != user.No_of_farmers
+      (u) => u.Farmer_Reg_No_as_on_Tracent != user.Farmer_Reg_No_as_on_Tracent
     );
-    setData([...DeletedUser]);
+    setFarmerListArray([...DeletedUser]);
   };
   let datasheet;
   const RedaFile = () => {
@@ -170,35 +131,49 @@ const CROP_DETAILS = () => {
         console.log(datasheet);
         datasheet[0].map((v, index) => {
           console.log(v);
-          let Newfromdata = {
-            No_of_farmers: v["No. of farmers"],
-            Total_area_Ha: v["Total area (Ha)"],
-            Crop_n_Variety: v["Crop & Variety"],
-            Crop_type_Main_or_Intercrop: v[`"Crop type ↵(Main/ ↵Intercrop)"`],
-            Crop_Area_Ha: v["Crop Area (Ha)"],
-            No_of_trees_plants: v['"No. of trees/ ↵plants"'],
-            Sowing_time_mmyy: v["Sowing time (mm/yy)"],
-            Harvest_time_mmyy: v["Harvest time (mm/yy)"],
-            Actual_yield_of_last_year_MT: v["Actual yield of last year (MT)"],
-            Quantity_sold_of_last_year_MT: v["Quantity sold of last year (MT)"],
-            Estimated_yield_for_current_year_MT:
-              v["Estimated yield for current year (MT)"],
-            On_farm_processed_product: v["On farm processed product"],
-            Loss_in_percent: v["Loss in %"],
-            Field_status: v["Field status(IC1/IC2/IC3/C)"],
-            Product_status: v["Product status (IC/C)"],
+          let Newdata = {
+            Sr_no: v["Sr.No."],
+            Farmer_Name: v["Farmer Name "],
+            Farmer_Reg_No_as_on_Tracent: v["Farmer Reg. No."],
+            Total_area_Ha: v["Total Farm Area (Ha)"],
+            Date_of_last_use_of_forbidden_products: v[
+              "Date of last use of forbidden products"
+            ],
+            Date_of_Registration: v["Date of Registration"],
+            Latitude: v["Latitude"],
+            Longitude: v["Longitude"],
+            Aadhar_No: v["Aadhar No."],
+            Contact: v["Contact No."],
+            state: v["State"],
+            district: v["District"],
+            taluka: v["Taluk"],
+            village: v["Village"],
+            farmer: v["Farmer"],
+            field_status: v["Field Status"],
+            crop: [],
+            Inspection: [],
           };
+          
           let temparryforempty = { ...tableDetails };
-          settableDetails({ ...Newfromdata });
-          setData((oldform) => [...oldform, Newfromdata]);
+          settableDetails({ ...Newdata });
+          setFarmerListArray((oldform) => [...oldform, Newdata]);
           settableDetails({ ...temparryforempty });
         });
       });
     };
     reader.readAsBinaryString(f);
   };
+  const showModalCropData = (val) => {
+    setModalCropData(val);
+    setModalShow(true);
+  };
+  const showModalInspectionData = (val) => {
+    setModalInspectionData(val);
+    setModalInspectionShow(true);
+  }
   return (
     <>
+      {JSON.stringify(FarmerListArray)}
       <div className="flex mb-4">
         <label className="font-medium ">ICS Name</label>
         <input type="text" />
@@ -227,89 +202,39 @@ const CROP_DETAILS = () => {
       >
         <thead>
           <tr>
-            <th rowSpan={2}>Sr. No. </th>
-            <th rowSpan={2}>State</th>
-            <th rowSpan={2}>District</th>
-            <th rowSpan={2}>Taluka</th>
-            <th rowSpan={2}>Village</th>
-            <th rowSpan={2}>Farmer</th>
-            <th rowSpan={2}>Farmer TraceNet Reg. No.</th>
-            <th rowSpan={2}>Total Area (Ha)</th>
-            <th rowSpan={2}>Field Status</th>
-            {}
-            <th colSpan={4}>Crop</th>
-            <th colSpan={4}>Crop</th>
-            <th rowSpan={2} colSpan={2}>
-              Actions
-            </th>
-          </tr>
-          <tr>
-            <th>{cropheader[0]}</th>
-            <th>{cropheader[1]}</th>
-            <th>{cropheader[2]}</th>
-            <th>{cropheader[3]}</th>
-            <th>{cropheader[0]}</th>
-            <th>{cropheader[1]}</th>
-            <th>{cropheader[2]}</th>
-            <th>{cropheader[3]}</th>
+            <th>Sr. No.</th>
+            <th>Farmer Name</th>
+            <th>Farmer TraceNet Reg. No.</th>
+            <th>Total Area (Ha)</th>
+            <th>Date of last use of forbidden products</th>
+            <th>Date of Registration</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>Aadhar No.</th>
+            <th>Contact</th>
+            <th>State</th>
+            <th>District</th>
+            <th>Taluka</th>
+            <th>Village</th>
+            <th>Farmer</th>
+            <th>Field Status</th>
+            <th>Crop</th>
+            <th>Inspection</th>
           </tr>
         </thead>
         <tbody>
           <tr className={hideRowButton === true ? "hidden" : ""}>
             {Object.entries(tableDetails).map((ass, index) => {
-              return (Array.isArray(ass[1])) ? (
-                ass[1].map((arr1, i)=>{
-                  return(
-                    <>
-                    <td className="" key={index}>
-                  <input
-                    className="!text-sm !font-light p-1"
-                    type="text"
-                    name={arr1[0]}
-                    placeholder={arr1[0]}
-                    value={"omkar"}
-                    onChange={handleChangeNewUser}
-                  />
-                </td>
-                <td className="" key={index}>
-                <input
-                  className="!text-sm !font-light p-1"
-                  type="text"
-                  name={arr1[1]}
-                    placeholder={arr1[1]}
-                  value={"omkar"}
-                  onChange={handleChangeNewUser}
-                />
-              </td>
-              <td className="" key={index}>
-              <input
-                className="!text-sm !font-light p-1"
-                type="text"
-                name={"omkar"}
-                value={"omkar"}
-                onChange={handleChangeNewUser}
-              />
-            </td>
-            <td className="" key={index}>
-            <input
-              className="!text-sm !font-light p-1"
-              type="text"
-              name={"omkar"}
-              value={"omkar"}
-              onChange={handleChangeNewUser}
-            />
-          </td>
-          </>
-                  )
-                })
+              return Array.isArray(ass[1]) ? (
+                ""
               ) : (
                 <td className="" key={index}>
-                  {console.log(ass)}
                   <input
                     className="!text-sm !font-light p-1"
                     type="text"
                     name={ass[0]}
                     value={tableDetails[ass[0]]}
+                    placeholder={tableDetails[ass[0]]}
                     onChange={handleChangeNewUser}
                   />
                 </td>
@@ -331,11 +256,13 @@ const CROP_DETAILS = () => {
               </Button>
             </td>
           </tr>
-          {Data.map((v, index) => {
-            return edituserID === v.No_of_farmers ? (
+          {FarmerListArray.map((v, index) => {
+            return edituserID === v.Farmer_Reg_No_as_on_Tracent ? (
               <tr>
                 {Object.entries(EditDetails).map((ass, index) => {
-                  return (
+                  return Array.isArray(ass[1]) ? (
+                    ""
+                  ) : (
                     <td className="" key={index}>
                       <input
                         className="!text-sm !font-light p-1"
@@ -362,39 +289,69 @@ const CROP_DETAILS = () => {
                 </td>
               </tr>
             ) : (
-              <tr>
-                <td>{v.Sr_no}</td>
-                <td>{v.state}</td>
-                <td>{v.district}</td>
-                <td>{v.taluka}</td>
-                <td>{v.village}</td>
-                <td>{v.farmer}</td>
-                <td>{v.farmer_tracenet_reg_no}</td>
-                <td>{v.total_area_ha}</td>
-                <td>{v.field_status}</td>
-                {v.crop?.map((cpacs, index) => {
-                  return (
-                    <>
-                      <td>{cpacs.season}</td>
-                      <td>{cpacs.type}</td>
-                      <td>{cpacs.product_status}</td>
-                      <td>{cpacs.estqty}</td>
-                    </>
-                  );
-                })}
+              <tr key={index}>
+                <td>{v?.Sr_no}</td>
+                <td>{v?.Farmer_Name}</td>
+                <td>{v?.Farmer_Reg_No_as_on_Tracent}</td>
+                <td>{v?.Total_area_Ha}</td>
+                <td>{v?.Date_of_last_use_of_forbidden_products}</td>
+                <td>{v?.Date_of_Registration}</td>
+                <td>{v?.Latitude}</td>
+                <td>{v?.Longitude}</td>
+                <td>{v?.Aadhar_No}</td>
+                <td>{v?.Contact}</td>
+                <td>{v?.state}</td>
+                <td>{v?.district}</td>
+                <td>{v?.taluka}</td>
+                <td>{v?.village}</td>
+                <td>{v?.farmer}</td>
+                <td>{v?.field_status}</td>
+                <td>
+                  <Button variant="primary" onClick={() => showModalCropData(v)}>
+                    Crops
+                  </Button>
+                </td>
+                <td>
+                  <Button variant="primary" onClick={() => showModalInspectionData(v)}>
+                    Inspection
+                  </Button>
+                </td>
                 <td>
                   <Button onClick={(event) => handleEditClick(event, v)}>
                     Edit
                   </Button>
                 </td>
                 <td>
-                  <Button>Delete</Button>
+                <Button className="!text-sm"
+                      onClick={(event) => {
+                        handleDeleteClick(event, v);
+                      }}
+                    >
+                      Delete
+                    </Button>
                 </td>
+                
               </tr>
             );
           })}
         </tbody>
       </Table>
+      <>
+      <ModalComp
+        show={modalShow}
+        setFarmerListArray={setFarmerListArray}
+        FarmerListArray={FarmerListArray}
+        modaldata={ModalCropData}
+        onHide={() => setModalShow(false)}
+      />
+      <ModalForInspection
+      show={modalInspectionShow}
+      setFarmerListArray={setFarmerListArray}
+      FarmerListArray={FarmerListArray}
+      modaldata={ModalInspectionData}
+      onHide={() => setModalInspectionShow(false)}
+      />
+      </>
     </>
   );
 };

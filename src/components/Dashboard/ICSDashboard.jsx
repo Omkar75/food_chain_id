@@ -5,13 +5,15 @@ import axios from "../../api/axios";
 import { useLocation } from "react-router-dom";
 const process = [
   {
+    no:"01",
     name: "Certification Application Crop-Individual",
-    link: "certificationdecision",
+    link: "certification01",
     statustext: "form1",
   },
   {
+    no:"01a",
     name: "Organis System Plan-Crop Production",
-    link: "certificationdecision",
+    link: "OrganicSystemPlan01a",
     statustext: "form1a",
   },
   {
@@ -28,13 +30,15 @@ const process = [
     statustext: "form1d",
   },
   {
+    no:"02",
     name: "Certification Agreement",
-    link: "certificationdecision",
+    link: "Agreement01",
     statustext: "form2",
   },
   {
+    no:"03",
     name: "Audit Checklist - Crop Production",
-    link: "certificationdecision",
+    link: "AuditChecklist03",
     statustext: "form3",
   },
   {
@@ -101,12 +105,12 @@ const ICSDashboard = () => {
           <div>
           <h5 className="!text-gray-700">
             <span className="text-base font-normal">{`Name Of ICS: `}</span>
-            <span>{formStatus.name}</span>
+            <span>{formStatus?.name}</span>
           </h5>
-          <p className="!mb-0">Aadhar No: <span>{formStatus.aadharno}</span></p>
+          <p className="!mb-0">Aadhar No: <span>{formStatus?.aadharno}</span></p>
           </div>
           <p className="!mb-0">
-            Phone No: <span>{formStatus.phone}</span>
+            Phone No: <span>{formStatus?.phone}</span>
             <br />
           </p>
           </div>
@@ -124,8 +128,8 @@ const ICSDashboard = () => {
                   <Card>
                     <div className="!flex !flex-row !justify-between">
                       <div className="font-semibold text-gray-700 dark:text-gray-400 space-x-2">
-                        <span>{n.no}</span>
-                        <span>{n.name}</span>
+                        <span>{n?.no}</span>
+                        <span>{n?.name}</span>
                       </div>
                       {formStatus?.data?.[n.statustext]?.status ? (
                         <Badge color="success" size="sm">

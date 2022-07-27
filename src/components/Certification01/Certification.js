@@ -50,18 +50,17 @@ export default function Certification() {
 }
   
   return (
-    <div className="container card card-body ">
+    <div className="container">
       {JSON.stringify(formdata)}
           <center>
-            {" "}
-            <h6>Certification Information</h6>
+            <h6>{"Certification Information"}</h6>
           </center>
           <div>
-            <Form.Group as={Row} className="mb-3">
-              <Form.Label column sm={2}>
+            <Form.Group as={Row}>
+              <Form.Label column sm={5}>
                 Certification
               </Form.Label>
-              <Col sm={5}>
+              <Col>
                 <Form.Select
                   name="Certification"
                   onChange={inputEvent}
@@ -73,7 +72,7 @@ export default function Certification() {
                 </Form.Select>
               </Col>
             </Form.Group>
-            <Form.Group as={Row} className="mb-3">
+            <Form.Group as={Row}>
               <Form.Label column sm={2}>
                 Standard
               </Form.Label>
@@ -87,11 +86,13 @@ export default function Certification() {
                   <option value="NPOP ">NPOP</option>
                   <option value="Other">Other</option>
                 </Form.Select>
-                <Form.Control placeholder="If Other, Specify " />{" "}
+                <Form.Control name="Standard"
+                  onChange={inputEvent}
+                  value={formdata.Standard} placeholder="If Other, Specify " />
               </Col>
             </Form.Group>
 
-            <Form.Group as={Row} className="mb-3">
+            <Form.Group as={Row}>
               <Form.Label column sm={2}>
                 How long your farm under organic management
               </Form.Label>

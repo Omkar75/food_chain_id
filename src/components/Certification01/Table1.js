@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Table, Row, Col } from "react-bootstrap";
+import { Form, Table, Row, Col, Button } from "react-bootstrap";
 
 export default function Table1() {
   const [formdata, setformdata] = useState({
@@ -10,7 +10,7 @@ export default function Table1() {
     Position: "",
     Office: "",
     Country: "",
-      Post: "",
+    Post: "",
     Physical: "",
     Telephone: "",
     Fax: "",
@@ -18,8 +18,6 @@ export default function Table1() {
     Email: "",
     Website: "",
     Aadhar: "",
-    
-
   });
 
   const inputEvent = (event, datasheet) => {
@@ -47,7 +45,6 @@ export default function Table1() {
       formdata.Fax === "" ||
       formdata.Mobile === "" ||
       formdata.Telephone === ""
-      
     ) {
       alert("Please enter all fields");
     } else {
@@ -73,40 +70,42 @@ export default function Table1() {
             Email: formdata.Email,
             Website: formdata.Website,
             Aadhar: formdata.Aadhar,
-            
+
             userId: "62c403e18e1a710854e6e856",
           }),
         }
-      ).then((res)=>{res.json().then((data)=>{console.log(data)})})
-
+      ).then((res) => {
+        res.json().then((data) => {
+          console.log(data);
+        });
+      });
     }
   };
 
   return (
-    <section className="section">
-      <div className="container card card-body ">
+    <section className="Container">
+      <div className="container space-y-4">
         {JSON.stringify(formdata)}
-
-        <div className="form-group col-md-6 d-flex justify-content-between ">
+        <Row>
+        <Col className="space-y-4">
+        <div className="form-group flex">
           <label htmlFor="">Organization Name</label>
 
           <input
-            className="w-50 my-2"
+            className=""
             type="text"
-            placeholder="Name "
             name="Name"
             onChange={inputEvent}
             value={formdata.Name}
             required="required"
           />
         </div>
-        <div className="form-group col-md-6 d-flex justify-content-between ">
+        <div className="form-group flex">
           <label htmlFor="">Organization PAN No / GST No </label>
 
           <input
-            className="w-50 my-2"
-            type="number"
-            placeholder="Name "
+            className=""
+            type="text"
             name="pan"
             onChange={inputEvent}
             value={formdata.pan}
@@ -114,45 +113,48 @@ export default function Table1() {
           />
         </div>
 
-        <div className="form-group col-md-6 d-flex justify-content-between ">
+        <div className="form-group flex">
           <label htmlFor="">Type of organization</label>
 
           <Form.Group>
             <Form.Select
-              name=" Typesoforg"
+              name="Typesoforg"
               onChange={inputEvent}
               value={formdata.Typesoforg}
             >
+              <option>Select a Option</option>
               <option value="Proprietor">Proprietor</option>
               <option value="Partnership ">Partnership </option>
               <option value="Limited">Limited</option>
               <option value="Cooperative">Cooperative</option>
               <option value="Other:"> Other:</option>
             </Form.Select>
-          
-            <Form.Control  placeholder="If Other, Specify " />
+
+            <Form.Control name="Typesoforg"
+              onChange={inputEvent}
+              value={formdata.Typesoforg} placeholder="If Other, Specify " />
           </Form.Group>
         </div>
-        <div className="form-group col-md-6 d-flex justify-content-between ">
+        </Col>
+        <Col className="space-y-4">
+        <div className="form-group flex">
           <label htmlFor="">Contact Name</label>
 
           <input
-            className="w-50 my-2"
-            type="number"
-            placeholder="Name "
+            className=""
+            type="text"
             name="contact"
             onChange={inputEvent}
             value={formdata.contact}
             required="required"
           />
         </div>
-        <div className="form-group col-md-6 d-flex justify-content-between ">
+        <div className="form-group flex">
           <label htmlFor="">Contact Position</label>
 
           <input
-            className="w-50 my-2"
+            className=""
             type="text"
-            placeholder="Name "
             name="Position"
             onChange={inputEvent}
             value={formdata.Position}
@@ -160,57 +162,28 @@ export default function Table1() {
           />
         </div>
 
-        <div className="form-group col-md-6 d-flex justify-content-between ">
+        <div className="form-group flex">
           <label htmlFor="">Office/ legal address</label>
 
-          <input
-            className="w-50 my-2"
+          <textarea
+            className=""
             type="text"
-            placeholder="Name "
             name="Office"
             onChange={inputEvent}
             value={formdata.Office}
             required="required"
           />
         </div>
-
-        <div className="form-group col-md-6 d-flex justify-content-between ">
-          <label htmlFor="">Country</label>
-
-          <input
-            className="w-50 my-2"
-            type="text"
-            placeholder="Name "
-            name="Country"
-            onChange={inputEvent}
-            value={formdata.Country}
-            required="required"
-          />
-        </div>
-
-        <div className="form-group col-md-6 d-flex justify-content-between ">
-          <label htmlFor="">Post code:</label>
-
-          <input
-            className="w-50 my-2"
-            type="number"
-            placeholder="Name "
-            name="Post"
-            onChange={inputEvent}
-            value={formdata.Post}
-            required="required"
-          />
-        </div>
-
-        <div className="form-group col-md-6 d-flex justify-content-between ">
+        </Col>
+      </Row>
+      <div className="form-group flex">
           <label htmlFor="">
             Physical (Farm/ICS office) Address, if different
           </label>
 
-          <input
-            className="w-50 my-2"
+          <textarea
+            className=""
             type="text"
-            placeholder="Name "
             name="Physical"
             onChange={inputEvent}
             value={formdata.Physical}
@@ -218,41 +191,64 @@ export default function Table1() {
           />
         </div>
 
-        <div className="form-group col-md-6 d-flex justify-content-between ">
+        <Row>
+          <Col className="space-y-4">
+          <div className="form-group flex">
+          <label htmlFor="">Country</label>
+
+          <input
+            className=""
+            type="text"
+            name="Country"
+            onChange={inputEvent}
+            value={formdata.Country}
+            required="required"
+          />
+        </div>
+        <div className="form-group flex">
+          <label htmlFor="">Post code:</label>
+
+          <input
+            className=""
+            type="text"
+            name="Post"
+            onChange={inputEvent}
+            value={formdata.Post}
+            required="required"
+          />
+        </div>
+        <div className="form-group flex">
           <label htmlFor="">Telephone</label>
 
           <input
-            className="w-50 my-2"
+            className=""
             type="text"
-            placeholder="Name "
             name="Telephone"
             onChange={inputEvent}
             value={formdata.Telephone}
             required="required"
           />
         </div>
-
-        <div className="form-group col-md-6 d-flex justify-content-between ">
+        <div className="form-group flex">
           <label htmlFor="">Fax </label>
 
           <input
-            className="w-50 my-2"
+            className=""
             type="text"
-            placeholder="Name "
             name="Fax"
             onChange={inputEvent}
             value={formdata.Fax}
             required="required"
           />
         </div>
-
-        <div className="form-group col-md-6 d-flex justify-content-between ">
+          </Col>
+          <Col className="space-y-4">
+          <div className="form-group flex">
           <label htmlFor="">Mobile</label>
 
           <input
-            className="w-50 my-2"
+            className=""
             type="text"
-            placeholder="Name "
             name="Mobile"
             onChange={inputEvent}
             value={formdata.Mobile}
@@ -260,26 +256,24 @@ export default function Table1() {
           />
         </div>
 
-        <div className="form-group col-md-6 d-flex justify-content-between ">
+        <div className="form-group flex">
           <label htmlFor="">Email</label>
 
           <input
-            className="w-50 my-2"
+            className=""
             type="text"
-            placeholder="Name "
             name="Email"
             onChange={inputEvent}
             value={formdata.Email}
             required="required"
           />
         </div>
-        <div className="form-group col-md-6 d-flex justify-content-between ">
+        <div className="form-group flex">
           <label htmlFor="">Website: </label>
 
           <input
-            className="w-50 my-2"
+            className=""
             type="text"
-            placeholder="Name "
             name="Website"
             onChange={inputEvent}
             value={formdata.Website}
@@ -287,27 +281,31 @@ export default function Table1() {
           />
         </div>
 
-        <div className="form-group col-md-6 d-flex justify-content-between ">
+        <div className="form-group flex">
           <label htmlFor="">Aadhar No. </label>
 
           <input
-            className="w-50 my-2"
+            className=""
             type="text"
-            placeholder="Name "
             name="Aadhar"
             onChange={inputEvent}
             value={formdata.Aadhar}
             required="required"
           />
         </div>
-      </div>
-      <button
+          </Col>
+        </Row>
+        <div className="flex justify-end">
+      <Button
         onClick={() => {
           SendToApi();
         }}
       >
         Submit
-      </button>
+      </Button>
+      </div>
+      </div>
+      
     </section>
   );
 }
