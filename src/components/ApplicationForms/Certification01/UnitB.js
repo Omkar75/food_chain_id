@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Form, Table } from "react-bootstrap";
-
+import { useLocation } from "react-router-dom";
 export default function UnitB() {
+  const location = useLocation();
+  const [datalist, setdatalist] = useState(location?.state?.user);
   const [formdata, setformdata] = useState({
     Name_Add: "",
     Project: "",
@@ -101,7 +103,7 @@ export default function UnitB() {
             Location_Farmer: formdata.Location_Farmer,
 
             Crop_History: formdata.Crop_History,
-            userId: "62c403e18e1a710854e6e856",
+            userId: datalist.form_conn,
           }),
         }
       ).then((res) => {

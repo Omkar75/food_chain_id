@@ -37,6 +37,10 @@ const ICSRegister = () => {
   const [PhoneNO, setPhoneNO] = useState(null);
   const [Andhar, setAndher] = useState(null);
 
+  const [CompanyName, setCompanyName] = useState("")
+  const [gstNo, setgstNo] = useState("")
+  const [udyogAadharNo, setudyogAadharNo] = useState("")
+  const [togglepass, settogglepass] = useState("password")
   useEffect(() => {
     userRef.current.focus();
   }, []);
@@ -54,7 +58,6 @@ const ICSRegister = () => {
   }, [user, pwd, matchPwd]);
 
   const handleSubmit = async (e) => {
-
     debugger
     e.preventDefault();
     // if button enabled with JS hack
@@ -65,6 +68,9 @@ const ICSRegister = () => {
       return;
     }
     console.log(JSON.stringify({
+      companyName: CompanyName,
+      gstNo:gstNo,
+      UdyogAadharNo:udyogAadharNo,
       name: user,
       email: Email,
       aadharno: parseInt(Andhar),
@@ -115,7 +121,6 @@ const ICSRegister = () => {
   return (
     <main className="w-full h-full flex justify-center">
         <section className="max-w-sm bg-white border-2 shadow-lg registerform !gap-2  rounded-md">
-          
             <p
               ref={errRef}
               className={errMsg ? "errmsg" : "offscreen"}
@@ -125,18 +130,51 @@ const ICSRegister = () => {
             </p>
             <h3 className="font-semibold text-pitchdark">Register</h3>
             <form onSubmit={handleSubmit}>
+            <label htmlFor="CompanyName">
+                Company Name:
+              </label>
+              <input
+                type="text"
+                id="CompanyName"
+                ref={userRef}
+                autoComplete="off"
+                onChange={(e) => setCompanyName(e.target.value)}
+                value={CompanyName}
+                required
+              />
+              <label htmlFor="gstNo">
+                GST No. :
+              </label>
+              <input
+                type="text"
+                id="gstNo"
+                autoComplete="off"
+                onChange={(e) => setgstNo(e.target.value)}
+                value={gstNo}
+                required
+              />
+              <label htmlFor="udyogAadharNo">
+                Udyog Aadhar No. :
+              </label>
+              <input
+                type="text"
+                id="udyogAadharNo"
+                autoComplete="off"
+                onChange={(e) => setudyogAadharNo(e.target.value)}
+                value={udyogAadharNo}
+                required
+              />
               <label htmlFor="username">
-                Full Name:
+                Full Name :
                 <FaCheck className={validName ? "valid" : "hide"} />
                 <FaTimes className={validName || !user ? "hide" : "invalid"} />
               </label>
               <input
                 type="text"
                 id="username"
-                ref={userRef}
                 autoComplete="off"
                 onChange={(e) => setUser(e.target.value)}
-                value={user}
+
                 required
                 aria-invalid={validName ? "false" : "true"}
                 aria-describedby="uidnote"
@@ -163,13 +201,15 @@ const ICSRegister = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 value={Email}
               />
-              <label htmlFor="PhoneNo">Phone No. :</label>
+              <div className="flex mt-2 space-x-2">
+              <label htmlFor="PhoneNo" className="max-w-max"><span>{"Phone No. : "}</span></label>
               <input
                 type="text"
                 required={true}
                 onChange={(e) => setPhoneNO(e.target.value)}
                 value={PhoneNO}
               />
+              </div>
               <label htmlFor="Andhar">Andhar Card No :</label>
               <input
                 type="text"
@@ -177,10 +217,10 @@ const ICSRegister = () => {
                 onChange={(e) => setAndher(e.target.value)}
                 value={Andhar}
               />
-              <label htmlFor="password">
-                Password:
+              <label htmlFor="password" className="flex items-center space-x-1">
                 <FaCheck className={validPwd ? "valid" : "hide"} />
                 <FaTimes className={validPwd || !pwd ? "hide" : "invalid"} />
+                <span>Password:</span>
               </label>
               <input
                 type="password"
@@ -197,7 +237,7 @@ const ICSRegister = () => {
                 id="pwdnote"
                 className={pwdFocus && !validPwd ? "instructions flex" : "offscreen"}
               >
-                <FaInfoCircle className="w-5! h-5!"/>
+                <FaInfoCircle className="!w-6 !h-6"/>
                 <div>
                 8 to 24 characters.
                 <br />
@@ -222,8 +262,9 @@ const ICSRegister = () => {
                   className={validMatch || !matchPwd ? "hide" : "invalid"}
                 />
               </label>
+              
               <input
-                type="password"
+                type="text"
                 id="confirm_pwd"
                 onChange={(e) => setMatchPwd(e.target.value)}
                 value={matchPwd}
@@ -242,6 +283,7 @@ const ICSRegister = () => {
                 <FaInfoCircle />
                 Must match the first password input field.
               </p>
+            
               <div className="mt-2 flex !justify-end">
               <button
               className=" border-2 whitespace-nowrap hover:translate-y-1 bg-pitchdark rounded-lg text-white !min-w-min !max-w-min disabled:!bg-teal-100 disabled:!text-gray-500 disabled:hover:!translate-y-0"

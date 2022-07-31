@@ -63,11 +63,11 @@ const ModalCropDetails = (props) => {
     <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter">
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Using Grid in Modal
+          Add Crop Details
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className="show-grid">
-        <Container>
+        <Container className="space-y-4">
           <Row>
             {JSON.stringify(Indidata)}
           <tr>

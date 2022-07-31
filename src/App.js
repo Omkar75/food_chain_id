@@ -17,20 +17,20 @@ import Organic_System_Plan_01a from "./components/ApplicationForms/Organic_Syste
 import ICSDashboard from "./components/Dashboard/ICSDashboard";
 import FieldHistory from "./components/ApplicationForms/Field_History_01d";
 import PendingListICS from "./components/Dashboard/PendingListICS";
-
+import ProfilePage from "./components/ProfilePage";
 
 //Importing a certification form 
 
-import Certificationmain from "./components/Certification01/Certificationmain";
+import Certificationmain from "./components/ApplicationForms/Certification01/Certificationmain";
 
 
 
 //importing certification agreement form
-import CertificationAgreementMain from "./components/Certification_Agreement/CertificationAgreementMain";
+import CertificationAgreementMain from "./components/ApplicationForms/Certification_Agreement/CertificationAgreementMain";
 
 //importing audit form 
 
-import AuditMain from "./components/Audit_Form/AuditMain";
+import AuditMain from "./components/ApplicationForms/Audit_Form/AuditMain";
 import Technical_Review_5 from "./components/ApplicationForms/Technical_Review_5/Technical_Review_5";
 
 
@@ -59,7 +59,7 @@ function App() {
 
       <Route path="OrganicSystemPlan01a" element={<Organic_System_Plan_01a/>}/>
       <Route path="TechnicalReview5" element={<Technical_Review_5/>}/>
-
+      <Route path="profilepage" element={<ProfilePage/>}/>
       {/* FoodchainID dashboard */}
       {/* <Route element={<RequiredAuth allowedRoles={["foodchainid"]}/>}>
         <Route path="dashboard" element={<Dashboard />} /> 

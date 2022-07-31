@@ -182,7 +182,7 @@ const FieldSpecsnYieldEstimate = () => {
     reader.readAsBinaryString(f);
   };
   const URL = "foodchainid_form1b/addcontactfs"
-  const URL_forTables = "foodchainid_form1b/addfieldspec"
+
   const callToApi = async () => {
     let Newformdata = {
       ...details,
@@ -250,6 +250,7 @@ const FieldSpecsnYieldEstimate = () => {
     getcall();
     getcalltable();
   }, [])
+  const URL_forTables = "foodchainid_form1b/addfieldspec"
   const callToApifottable = async () => {
     let Newformdata = {
       form_conn: datalist.form_conn,
@@ -381,10 +382,11 @@ const FieldSpecsnYieldEstimate = () => {
           <Button onClick={RedaFile}>Click to Add from Excel Sheet</Button>
         </div>
         <Table
-          className="!border-teal-700 !text-gray-800"
+          className="!border-teal-700 !text-gray-800 !h-1/2"
           bordered
           hover
           responsive
+          
         >
           <thead>
             <tr>

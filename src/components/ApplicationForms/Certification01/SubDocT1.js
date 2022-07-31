@@ -39,7 +39,7 @@ export default function SubDocT1() {
             <Table estriped bordered hover size="sm">
               <thead>
                 <tr>
-                  <th className="col-md-4" name="sno">
+                  <th className="col-md-1" name="sno">
                     Sno
                   </th>
                   <th className="col-md-4" name="farm">
@@ -69,6 +69,7 @@ export default function SubDocT1() {
                           onChange={inputEvent}
                           value={formdata.TypesofBusiness}
                         >
+                          <option>Select Option</option>
                           <option value="Yes">Yes</option>
                           <option value="No">No</option>
                           <option value="NA">NA</option>
@@ -103,6 +104,7 @@ export default function SubDocT1() {
                           onChange={inputEvent}
                           value={formdata.TypesofBusiness}
                         >
+                          <option>Select Option</option>
                           <option value="Yes">Yes</option>
                           <option value="No">No</option>
                           <option value="NA">NA</option>
@@ -137,6 +139,7 @@ export default function SubDocT1() {
                           onChange={inputEvent}
                           value={formdata.TypesofBusiness}
                         >
+                          <option>Select Option</option>
                           <option value="Yes">Yes</option>
                           <option value="No">No</option>
                           <option value="NA">NA</option>
@@ -171,6 +174,7 @@ export default function SubDocT1() {
                           onChange={inputEvent}
                           value={formdata.TypesofBusiness}
                         >
+                          <option>Select Option</option>
                           <option value="Yes">Yes</option>
                           <option value="No">No</option>
                           <option value="NA">NA</option>
@@ -205,6 +209,7 @@ export default function SubDocT1() {
                           onChange={inputEvent}
                           value={formdata.TypesofBusiness}
                         >
+                          <option>Select Option</option>
                           <option value="Yes">Yes</option>
                           <option value="No">No</option>
                           <option value="NA">NA</option>
@@ -242,6 +247,7 @@ export default function SubDocT1() {
                           onChange={inputEvent}
                           value={formdata.TypesofBusiness}
                         >
+                          <option>Select Option</option>
                           <option value="Yes">Yes</option>
                           <option value="No">No</option>
                           <option value="NA">NA</option>
@@ -279,6 +285,7 @@ export default function SubDocT1() {
                           onChange={inputEvent}
                           value={formdata.TypesofBusiness}
                         >
+                          <option>Select Option</option>
                           <option value="Yes">Yes</option>
                           <option value="No">No</option>
                           <option value="NA">NA</option>
@@ -316,6 +323,7 @@ export default function SubDocT1() {
                           onChange={inputEvent}
                           value={formdata.TypesofBusiness}
                         >
+                          <option>Select Option</option>
                           <option value="Yes">Yes</option>
                           <option value="No">No</option>
                           <option value="NA">NA</option>

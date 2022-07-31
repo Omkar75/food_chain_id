@@ -5,13 +5,13 @@ import axios from "../../api/axios";
 import { useLocation } from "react-router-dom";
 const process = [
   {
-    no:"01",
+    no: "01",
     name: "Certification Application Crop-Individual",
     link: "certification01",
     statustext: "form1",
   },
   {
-    no:"01a",
+    no: "01a",
     name: "Organis System Plan-Crop Production",
     link: "OrganicSystemPlan01a",
     statustext: "form1a",
@@ -30,13 +30,13 @@ const process = [
     statustext: "form1d",
   },
   {
-    no:"02",
+    no: "02",
     name: "Certification Agreement",
     link: "Agreement01",
     statustext: "form2",
   },
   {
-    no:"03",
+    no: "03",
     name: "Audit Checklist - Crop Production",
     link: "AuditChecklist03",
     statustext: "form3",
@@ -52,7 +52,7 @@ const process = [
     statustext: "form4",
   },
   {
-    no:"05",
+    no: "05",
     name: "Technical Review - Crop Production",
     link: "TechnicalReview5",
     statustext: "form5",
@@ -66,13 +66,15 @@ const process = [
 ];
 const ICSDashboard = () => {
   const location = useLocation();
-  const [userdata, setuserdata] = useState(location.state?.user || JSON.parse(localStorage.getItem("user")));
-  const [Operatordata, setOperatordata] = useState()
+  const [userdata, setuserdata] = useState(
+    location?.state?.user || JSON.parse(localStorage.getItem("user"))
+  );
+  const [Operatordata, setOperatordata] = useState();
   const [formStatus, setformStatus] = useState();
-  
+
   const callToApi = async () => {
     const url_status = "/foodchainid/getoperatorprofile";
-    console.log(userdata.conn_id)
+    console.log(userdata.conn_id);
     try {
       const response = await axios.post(
         url_status,
@@ -84,10 +86,9 @@ const ICSDashboard = () => {
         }
       );
       console.log("---data---" + JSON.stringify(response.data));
-      if(response.data){
+      if (response.data) {
         setformStatus(response.data.data);
       }
-      
     } catch (err) {
       console.log(err);
     }
@@ -101,30 +102,38 @@ const ICSDashboard = () => {
     <section className="sm:!max-w-xl md:!max-w-3xl lg:!max-w-5xl !mx-auto">
       {JSON.stringify(formStatus)}
       <div className="space-y-2">
-      <Card>
+        <Card>
           <div className="flex !flex-row !justify-between">
-          <div>
-          <h5 className="!text-gray-700">
-            <span className="text-base font-normal">{`Name Of ICS: `}</span>
-            <span>{formStatus?.name}</span>
-          </h5>
-          <p className="!mb-0">Aadhar No: <span>{formStatus?.aadharno}</span></p>
-          </div>
-          <p className="!mb-0">
-            Phone No: <span>{formStatus?.phone}</span>
-            <br />
-          </p>
+            <div>
+              <h5 className="!text-gray-700">
+                <span className="text-base font-normal">{`Name Of ICS: `}</span>
+                <span>{formStatus?.name}</span>
+              </h5>
+              <p className="!mb-0">
+                Aadhar No: <span>{formStatus?.aadharno}</span>
+              </p>
+            </div>
+            <div>
+              <p className="!mb-[8px]">
+                Phone No: <span>{formStatus?.phone}</span>
+                <br />
+              </p>
+              <p className="!mb-0">
+                Application Status: <span>{formStatus?.status}</span>
+                <br />
+              </p>
+            </div>
           </div>
         </Card>
         <Card>
           <section className="!space-x-3">
             {process.map((n, index) => {
               return (
-                
                 <Link
                   to={"/" + n.link}
                   key={index}
                   style={{ textDecoration: "none" }}
+                  state={{user:userdata}}
                 >
                   <Card>
                     <div className="!flex !flex-row !justify-between">

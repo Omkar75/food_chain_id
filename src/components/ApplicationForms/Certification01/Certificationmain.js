@@ -15,11 +15,11 @@ import SubDocT2 from "./SubDocT2";
 import CB from "./CB";
 import Footer from "./Footer";
 import Certification from "./Certification";
-import CROP_DETAILS from '../ApplicationForms/Farmer_List_01c/CROP_DETAILS';
+import CROP_DETAILS from '../Farmer_List_01c/CROP_DETAILS';
 
 export default function Certificationmain() {
   return (
-    <div className="container card card-body "  >
+    <div className="container card card-body ">
     <center> <h2>01 Certification Form </h2></center>
   <div className="container">
     <Accordion>

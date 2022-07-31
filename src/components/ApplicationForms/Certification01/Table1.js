@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Form, Table, Row, Col, Button } from "react-bootstrap";
+import { useLocation } from "react-router-dom";
 
 export default function Table1() {
+  const location = useLocation();
+  const [datalist, setdatalist] = useState(location?.state?.user);
+  
   const [formdata, setformdata] = useState({
     Name: "",
     pan: "",
@@ -71,7 +75,7 @@ export default function Table1() {
             Website: formdata.Website,
             Aadhar: formdata.Aadhar,
 
-            userId: "62c403e18e1a710854e6e856",
+            userId: datalist.form_conn,
           }),
         }
       ).then((res) => {
@@ -84,6 +88,7 @@ export default function Table1() {
 
   return (
     <section className="Container">
+      {JSON.stringify(datalist)}
       <div className="container space-y-4">
         {JSON.stringify(formdata)}
         <Row>

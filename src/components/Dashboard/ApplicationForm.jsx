@@ -82,7 +82,7 @@ const ApplicationForm = () => {
       );
       console.log("------" + JSON.stringify(response));
       if(response.data){
-        setformStatus(response.data);
+        setformStatus(response.data.data);
       }
       
     } catch (err) {
@@ -95,7 +95,7 @@ const ApplicationForm = () => {
 
   return (
     <section className="sm:!max-w-xl md:!max-w-3xl lg:!max-w-5xl !mx-auto">
-      {JSON.stringify(userdata)}
+      {JSON.stringify(formStatus)}
       <div className="space-y-2">
         <Card>
           <div className="flex !flex-row !justify-between">

@@ -3,6 +3,7 @@ import { Col, Card, Form, Table, Row, Button } from "react-bootstrap";
 import * as XLSX from "xlsx/xlsx.mjs";
 import axios from "../../../api/axios";
 import AuthContext from "../../../context/AuthProvider";
+import { useLocation } from "react-router-dom";
 const Tableheaders = [
   { name: "Sr. No." },
   { name: "Sanctioned Farmer Name" },
@@ -66,10 +67,12 @@ const StatesObjectfortable = {
   Reason: "",
 }
 const Sanctioned_Farmer_List = () => {
+  const location = useLocation();
   const [Data, setData] = useState([]);
   const [file, setFile] = useState();
   const [edituserID, setedituserID] = useState(null);
   const [hideRowButton, sethideRowButton] = useState(true);
+  const [datalist, setdatalist] = useState(location?.state?.user);
   const { auth } = useContext(AuthContext);
   useEffect(() => {
     console.log("--------------------------------------------------")
@@ -184,7 +187,7 @@ const Sanctioned_Farmer_List = () => {
       const response = await axios.post(
         get_url,
         JSON.stringify({
-          form_conn: "62d1545bb63a268f6cbe788f",
+          form_conn: datalist.form_conn,
         }),
         {
           headers: { "Content-Type": "application/json" },
@@ -205,7 +208,7 @@ const Sanctioned_Farmer_List = () => {
   const URL_forTables = "foodchainid_form1c/addfarmerlist"
   const callToApi = async () => {
     let Newformdata = {
-      userId: "62d153a39aeef55960f11da9",
+      form_conn: datalist.form_conn,
       data: [...Data], 
     };
     console.log(JSON.stringify({Newformdata}))

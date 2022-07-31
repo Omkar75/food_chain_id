@@ -5,8 +5,10 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import InputGroup from "react-bootstrap/InputGroup";
 import Input from "react-bootstrap/InputGroup";
-
+import { useLocation } from "react-router-dom";
 export default function PrevInfoT3() {
+  const location = useLocation();
+  const [datalist, setdatalist] = useState(location?.state?.user);
   const [formdata, setformdata] = useState({
     Name: "",
     sign: "",
@@ -65,7 +67,7 @@ export default function PrevInfoT3() {
             registration: formdata.registration,
             status: formdata.status==="Yes"?true:false,
             reason_d: formdata.reason_d,
-            userId: "62c403e18e1a710854e6e856",
+            userId: datalist.form_conn,
           }),
         }
       ).then((res) => {

@@ -1,7 +1,9 @@
 import React, { useState,  useEffect } from "react";
 import { Form, Table, Row, Col } from "react-bootstrap";
-
+import { useLocation } from "react-router-dom";
 export default function Certification() {
+  const location = useLocation();
+  const [datalist, setdatalist] = useState(location?.state?.user);
   const [formdata,setformdata] = useState({
     Certification: "",
     Standard: "",
@@ -37,7 +39,7 @@ export default function Certification() {
               Certification: formdata.Certification,
               Standard:formdata.Standard,
               Time: formdata.Time,
-              userId: "62c403e18e1a710854e6e856",
+              userId: datalist.form_conn,
 
             })
         }
@@ -51,6 +53,7 @@ export default function Certification() {
   
   return (
     <div className="container">
+      {JSON.stringify(datalist)}
       {JSON.stringify(formdata)}
           <center>
             <h6>{"Certification Information"}</h6>

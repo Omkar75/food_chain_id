@@ -2,8 +2,10 @@ import React from "react";
 import { Form, Table } from "react-bootstrap";
 import { BsPlusSquare, BsDashSquare } from "react-icons/bs";
 import { useState, useEffect } from "react";
-
+import { useLocation } from "react-router-dom";
 export default function UnitA() {
+  const location = useLocation();
+  const [datalist, setdatalist] = useState(location?.state?.user);
   const [formdata, setformdata] = useState({
     Name: "",
     Area: "",
@@ -86,7 +88,7 @@ export default function UnitA() {
             P_intercrop: formdata.P_intercrop,
             Details: formdata.Details,
             Crop_History: formdata.Crop_History,
-            userId: "62c403e18e1a710854e6e856",
+            userId: datalist.form_conn,
           }),
         }
       ).then((res) => {

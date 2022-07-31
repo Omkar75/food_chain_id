@@ -6,9 +6,12 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { Dropdown } from "react-bootstrap";
 import AuthContext from "../context/AuthProvider";
 import { FaUserCircle } from 'react-icons/fa';
+import { useNavigate } from "react-router-dom";
+
 const NavbarComp = () => {
   const { logout, auth } = useContext(AuthContext);
   const [authuser, setauthuser] = useState()
+  const navigate = useNavigate();
   useEffect(() => {
     setauthuser(auth)
   }, [auth])
@@ -54,7 +57,7 @@ const NavbarComp = () => {
               ) : (
                 
               )} */}
-              <Dropdown.Item onClick={logout}>Profile Page</Dropdown.Item>
+              <Dropdown.Item onClick={()=>navigate('profilepage')}>Profile Page</Dropdown.Item>
               <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>:""}

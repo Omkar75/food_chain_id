@@ -28,7 +28,7 @@ const ModalAddRows = (props) => {
     <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter">
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Using Grid in Modal
+          Add Data
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className="show-grid">
